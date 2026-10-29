@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "siteName": "MediaFire",
+    "siteUrl": "https://www.mediafire.com/",
+    "siteKey": "mediafire-com",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent",
+    "discoveredAt": "2026-09-29T09:45:31.950Z",
+    "discoveryUrls": [
+      "https://www.mediafire.com/",
+      "https://www.mediafire.com/login/",
+      "https://app.mediafire.com/folder/myfiles"
+    ]
+  },
+  "auth": {
+    "required": false,
+    "loginSteps": [
+      {
+        "id": "login-email",
+        "action": "fill",
+        "selector": "input[name=\"login_email\"]",
+        "property": "_email"
+      },
+      {
+        "id": "login-password",
+        "action": "fill",
+        "selector": "input[name=\"login_pass\"]",
+        "property": "_password"
+      },
+      {
+        "id": "login-submit",
+        "action": "click",
+        "selector": "#loginStep0 > :nth-child(4) > :nth-child(1)"
+      }
+    ],
+    "signupSteps": []
+  },
+  "inputs": {
+    "content": {
+      "mode": "document"
+    },
+    "fields": [
+      "title",
+      "backlinkUrl",
+      "keyword"
+    ]
+  },
+  "steps": [
+    {
+      "id": "goto-files",
+      "action": "goto",
+      "url": "https://app.mediafire.com/folder/myfiles",
+      "waitAfter": 3000
+    },
+    {
+      "id": "open-create-0",
+      "action": "click",
+      "selector": "button[aria-label='Upload files']",
+      "waitAfter": 4000
+    },
+    {
+      "id": "upload-body",
+      "action": "upload",
+      "selector": "input[type='file']",
+      "property": "bodyDocument",
+      "waitAfter": 5000
+    },
+    {
+      "id": "start-upload",
+      "action": "click",
+      "selector": "button[aria-label='Start upload']",
+      "waitAfter": 12000
+    },
+    {
+      "id": "wait-upload-done",
+      "action": "wait",
+      "timeout": 25000
+    }
+  ],
+  "fieldMappings": {},
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "[data-testid='confirmation']",
+      "[class*='success']"
+    ],
+    "urlPatterns": [
+      "https://www.mediafire.com/file/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": false,
+    "supportsTags": false,
+    "supportsCategory": false,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "ready",
+  "missing": [],
+  "notes": "MediaFire is a file host: \"publish\" = upload the blog body document (anchored backlink inside) and resolve the public /file/<key>/<name> share link from the Copy-share-link clipboard.",
+  "site": "https://www.mediafire.com/",
+  "savedAt": "2026-09-29T09:45:31.958Z"
+}

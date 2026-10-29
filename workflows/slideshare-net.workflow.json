@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "siteName": "slideshare",
+    "siteUrl": "https://www.slideshare.net/",
+    "siteKey": "slideshare-net",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent",
+    "discoveredAt": "2026-09-21T09:33:36.782Z",
+    "discoveryUrls": [
+      "https://www.slideshare.net/",
+      "https://www.slideshare.net/login?from_source=%2F",
+      "https://www.slideshare.net/upload"
+    ]
+  },
+  "auth": {
+    "required": false,
+    "loginSteps": [],
+    "signupSteps": []
+  },
+  "inputs": {
+    "content": {
+      "mode": "document"
+    }
+  },
+  "steps": [
+    {
+      "id": "goto-home",
+      "action": "goto",
+      "url": "https://www.slideshare.net/"
+    },
+    {
+      "id": "click-upload",
+      "action": "click",
+      "selector": "a[href=\"/upload\"]",
+      "text": "Upload",
+      "waitAfter": 2500
+    },
+    {
+      "id": "wait-upload-page",
+      "action": "wait",
+      "untilVisible": "input#local-upload[type='file']",
+      "timeout": 20000
+    },
+    {
+      "id": "upload-body-document",
+      "action": "upload",
+      "selector": "input#local-upload[type='file']",
+      "property": "bodyDocument",
+      "waitAfter": 2500
+    }
+  ],
+  "fieldMappings": {},
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "[class*='success']",
+      "[class*='alert']",
+      "[data-testid*='upload']"
+    ],
+    "urlPatterns": [
+      "https://www.slideshare.net/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": false,
+    "supportsTags": false,
+    "supportsCategory": false,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "active",
+  "blocker": null,
+  "missing": [],
+  "notes": "Upload flow: enter slideshare.net -> click top-right Upload -> the 'Select documents to upload' control is the file input #local-upload -> set the document. (Post-upload form steps not yet mapped.)",
+  "site": "https://www.slideshare.net/",
+  "savedAt": "2026-09-21T09:33:36.782Z"
+}

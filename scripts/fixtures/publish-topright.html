@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Behance-like editor — top-right Publish decoy</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    [hidden] { display: none !important; }
+    #btn-top-right-publish { position: fixed; top: 12px; right: 16px; padding: 8px 14px; }
+    #dialog { border: 2px solid #555; padding: 16px; margin-top: 80px; }
+    input, textarea { display: block; width: 90%; margin: 6px 0; padding: 6px; }
+  </style>
+</head>
+<body>
+  <!-- The real Publish lives in the top-right corner of the screen, OUTSIDE
+       the Project Editor nav, exactly like the live editor. -->
+  <button id="btn-top-right-publish" type="button">Publish</button>
+
+  <!-- A stale structural selector nav[aria-label="Project Editor"] >
+       :nth-child(4) > :nth-child(3) points at the Prototype button. -->
+
+  <nav aria-label="Project Editor">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div>
+      <div></div>
+      <div></div>
+      <button id="btn-prototype" type="button">Prototype</button>
+    </div>
+  </nav>
+
+  <header>
+    <button id="btn-text" type="button">Text</button>
+  </header>
+  <div id="text-panel" hidden>
+    <div id="body-editor" contenteditable="true" aria-label="Write about your work"></div>
+  </div>
+
+  <section id="dialog" role="dialog" hidden>
+    <input aria-label="Give your project a title" id="in-title" />
+    <textarea id="project-description" aria-label="Description"></textarea>
+    <input id="in-tags" placeholder="Add up to 10 keywords to help people discover your project" />
+    <div id="tag-suggestions" role="listbox" hidden>
+      <button role="option" data-tag="AI Automation">AI Automation</button>
+      <button role="option" data-tag="Automation Solutions">Automation Solutions</button>
+    </div>
+    <div aria-label="Settings Action Buttons">
+      <button id="btn-dialog-publish" type="button">Publish</button>
+    </div>
+  </section>
+
+  <script>
+    window.__captured = {};
+    window.addEventListener("load", () => {
+      document.getElementById("btn-prototype").addEventListener("click", () => {
+        window.__captured.prototypeClicked = true;
+      });
+      document.getElementById("btn-dialog-publish").addEventListener("click", () => {
+        window.__captured.dialogPublishClicked = true;
+      });
+      document.getElementById("btn-top-right-publish").addEventListener("click", () => {
+        window.__captured.topRightPublishClicked = (window.__captured.topRightPublishClicked || 0) + 1;
+        document.getElementById("dialog").hidden = false;
+        window.__captured.dialogOpened = true;
+      });
+      document.getElementById("btn-text").addEventListener("click", () => {
+        document.getElementById("text-panel").hidden = false;
+        window.__captured.textClicked = true;
+      });
+      const tagInput = document.getElementById("in-tags");
+      const suggestions = document.getElementById("tag-suggestions");
+      tagInput.addEventListener("input", () => {
+        suggestions.hidden = !tagInput.value.trim();
+      });
+      suggestions.querySelectorAll("button[role=option]").forEach((b) => {
+        b.addEventListener("click", () => {
+          window.__captured.pickedTags = (window.__captured.pickedTags || []).concat(b.dataset.tag);
+          tagInput.value = "";
+          suggestions.hidden = true;
+          tagInput.focus();
+        });
+      });
+    });
+  </script>
+</body>
+</html>

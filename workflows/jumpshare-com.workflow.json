@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "siteName": "jumpshare",
+    "siteUrl": "https://jumpshare.com/",
+    "siteKey": "jumpshare-com",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent+human-verified",
+    "discoveredAt": "2026-09-30T08:57:59.648Z",
+    "notes": "Validated manually. The public share link is a row anchor a.thumb-title with href=/share/<token> and title=<filename>. Guest homepage widget is wrong: the real flow is the logged-in web app — https://jumpshare.com/ redirects to /w/<workspace>/personal once signed in; upload via #_upload_input in the library. Login is behind Cloudflare Turnstile (data-sitekey), handled by the captcha step."
+  },
+  "auth": {
+    "required": true,
+    "loginSteps": [
+      {
+        "id": "login-goto",
+        "action": "goto",
+        "url": "https://jumpshare.com/login"
+      },
+      {
+        "id": "login-email",
+        "action": "fill",
+        "selector": "#user_email",
+        "property": "_email",
+        "waitAfter": 800
+      },
+      {
+        "id": "login-password",
+        "action": "fill",
+        "selector": "#password",
+        "property": "_password",
+        "waitAfter": 500
+      },
+      {
+        "id": "login-submit",
+        "action": "click",
+        "selector": "#submitaction",
+        "waitAfter": 12000
+      }
+    ],
+    "signupSteps": []
+  },
+  "inputs": {
+    "content": {
+      "mode": "document"
+    },
+    "fields": [
+      "title",
+      "backlinkUrl",
+      "keyword"
+    ]
+  },
+  "steps": [
+    {
+      "id": "goto-library",
+      "action": "goto",
+      "url": "https://jumpshare.com/",
+      "waitAfter": 8000
+    },
+    {
+      "id": "upload-document",
+      "action": "upload",
+      "selector": "#_upload_input",
+      "property": "bodyDocument",
+      "waitAfter": 16000
+    },
+    {
+      "id": "resolve-duplicate",
+      "action": "click",
+      "text": "Duplicate",
+      "optional": true,
+      "waitAfter": 8000
+    },
+    {
+      "id": "wait-file-row",
+      "action": "wait",
+      "untilVisible": "a.thumb-title",
+      "timeoutMs": 45000,
+      "waitAfter": 2000
+    }
+  ],
+  "fieldMappings": {
+    "bodyDocument": "upload-document"
+  },
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "a.thumb-title[href^='/share/']"
+    ],
+    "urlPatterns": [
+      "https://jumpshare.com/share/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": false,
+    "supportsTags": false,
+    "supportsCategory": false,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "ready",
+  "missing": [],
+  "notes": "",
+  "validation": {
+    "ranAt": "2026-09-30T09:30:00.000Z",
+    "ok": "pass",
+    "checked": 1,
+    "problems": []
+  },
+  "site": "https://jumpshare.com/",
+  "savedAt": "2026-09-30T09:30:00.000Z"
+}

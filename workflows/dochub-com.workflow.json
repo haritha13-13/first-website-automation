@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "siteName": "dochub",
+    "siteUrl": "https://dochub.com/",
+    "siteKey": "dochub-com",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent+human-verified",
+    "discoveredAt": "2026-09-30T05:43:39.074Z",
+    "notes": "Validated manually. Real app lives at https://dochub.com/ (no-www); www.dochub.com/* subpaths are marketing 404s and app.dochub.com does not resolve. Public link appears in readonly #shareLink inside the editor Share dialog after 'Get Shareable Link'. One-time account verification (reCAPTCHA/phone/Pro) is required before DocHub creates share tokens; free plan caps document creation at 10/day."
+  },
+  "auth": {
+    "required": true,
+    "loginSteps": [
+      {
+        "id": "login-goto",
+        "action": "goto",
+        "url": "https://dochub.com/sign-in"
+      },
+      {
+        "id": "login-email",
+        "action": "fill",
+        "selector": "#email",
+        "property": "email",
+        "waitAfter": 800
+      },
+      {
+        "id": "login-password",
+        "action": "fill",
+        "selector": "input[type=password]",
+        "property": "password",
+        "waitAfter": 500
+      },
+      {
+        "id": "login-submit",
+        "action": "click",
+        "selector": "#dh-email-login-btn",
+        "text": "Sign in with password",
+        "waitAfter": 10000
+      }
+    ],
+    "signupSteps": []
+  },
+  "inputs": {
+    "content": {
+      "mode": "document"
+    }
+  },
+  "steps": [
+    {
+      "id": "goto-import",
+      "action": "goto",
+      "url": "https://dochub.com/new",
+      "waitAfter": 5000
+    },
+    {
+      "id": "upload-document",
+      "action": "upload",
+      "selector": "input[type=file]",
+      "property": "bodyDocument",
+      "waitAfter": 12000
+    },
+    {
+      "id": "create-document",
+      "action": "click",
+      "text": "Create Document",
+      "waitAfter": 15000
+    },
+    {
+      "id": "dismiss-onboarding",
+      "action": "click",
+      "text": "Skip",
+      "optional": true,
+      "waitAfter": 2000
+    },
+    {
+      "id": "wait-editor",
+      "action": "wait",
+      "untilVisible": "#share-send-btn",
+      "timeoutMs": 60000,
+      "waitAfter": 1000
+    }
+  ],
+  "fieldMappings": {
+    "bodyDocument": "upload-document"
+  },
+  "publish": {
+    "submitStepIds": [
+      "create-document"
+    ]
+  },
+  "verification": {
+    "successSelectors": [
+      "#shareLink",
+      "#shareLinkButton"
+    ],
+    "urlPatterns": [
+      "https://dochub.com/m/shared-document/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": false,
+    "supportsTags": false,
+    "supportsCategory": false,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "ready",
+  "missing": [],
+  "notes": "",
+  "validation": {
+    "ranAt": "2026-09-30T06:20:00.000Z",
+    "ok": "pass",
+    "checked": 1,
+    "problems": []
+  },
+  "site": "https://dochub.com/",
+  "savedAt": "2026-09-30T06:20:00.000Z"
+}

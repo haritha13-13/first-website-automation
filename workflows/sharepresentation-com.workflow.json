@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "siteName": "sharepresentation",
+    "siteUrl": "https://www.sharepresentation.com/",
+    "siteKey": "sharepresentation-com",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent",
+    "discoveredAt": "2026-09-17T04:52:46.199Z",
+    "discoveryUrls": [
+      "https://www.sharepresentation.com/"
+    ]
+  },
+  "auth": {
+    "required": true,
+    "loginMethod": "google",
+    "loginSteps": [
+      {
+        "id": "goto-login",
+        "action": "goto",
+        "url": "https://www.sharepresentation.com/",
+        "stepType": "login"
+      },
+      {
+        "id": "open-login",
+        "action": "click",
+        "selector": "#uploadsession",
+        "stepType": "login",
+        "waitAfter": 1500
+      },
+      {
+        "id": "google-login",
+        "action": "click",
+        "selector": "a[href*=\"google/redirect\"]",
+        "waitAfter": 2500,
+        "stepType": "login"
+      }
+    ]
+  },
+  "inputs": {
+    "content": {
+      "mode": "document"
+    }
+  },
+  "steps": [
+    {
+      "id": "goto-upload",
+      "action": "goto",
+      "url": "https://www.sharepresentation.com/upload"
+    },
+    {
+      "id": "upload-body-document",
+      "action": "upload",
+      "selector": "#file_uploading",
+      "property": "bodyDocument",
+      "waitAfter": 1500
+    },
+    {
+      "id": "fill-description",
+      "action": "fill",
+      "selector": "#discription",
+      "property": "shortDescription",
+      "waitAfter": 400
+    },
+    {
+      "id": "fill-tags",
+      "action": "tags",
+      "selector": "#tags-tokenfield.token-input.tt-input",
+      "property": "tags",
+      "waitAfter": 400
+    },
+    {
+      "id": "select-category",
+      "action": "select",
+      "selector": "#category_values",
+      "property": "category",
+      "waitAfter": 400
+    },
+    {
+      "id": "fill-title",
+      "action": "fill",
+      "selector": "#filename",
+      "property": "title",
+      "waitAfter": 400
+    },
+    {
+      "id": "submit-post",
+      "action": "click",
+      "selector": "#submit",
+      "waitAfter": 3000
+    }
+  ],
+  "fieldMappings": {
+    "title": "fill-title",
+    "description": "fill-description",
+    "tags": "fill-tags",
+    "category": "select-category"
+  },
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "[class*='success']",
+      "[class*='alert']",
+      "[data-dismiss='modal']"
+    ],
+    "urlPatterns": [
+      "https://www.sharepresentation.com/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": true,
+    "supportsTags": true,
+    "supportsCategory": true,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "active",
+  "missing": [],
+  "notes": "sharepresentation uploads a document (not pasted text). Clicking Upload opens the login modal when logged out; then 'Sign in with Google' (a[href*=\"google/redirect\"]) starts Google OAuth. After sign-in the site redirects to /upload (form #upload_form). The file input is #file_uploading; selecting a file auto-fills the title field #filename (name=file_name) with the filename and then ENABLES the once-disabled fields, so title/description/tags/category all run with a wait-for-enabled guard and title is overwritten last with the real blog title. Tags use Bootstrap tokenfield — each tag typed into #tags-tokenfield then Enter. Category is select#category_values. The Publish button is #submit; on success the site redirects to /dashboard where the just-published presentation appears as a .view-ppt link, from which the published URL is captured. Content mode is 'document' so the collector asks for a Document URL instead of a blog textarea.",
+  "validation": {
+    "ranAt": "2026-09-17T05:10:00.000Z",
+    "ok": "ok",
+    "checked": 8,
+    "problems": []
+  },
+  "site": "https://www.sharepresentation.com/",
+  "savedAt": "2026-09-17T04:52:46.218Z"
+}

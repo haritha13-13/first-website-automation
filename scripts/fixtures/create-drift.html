@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<body>
+  <nav aria-label="Site Wide">
+    <button id="btn-create">Create a project on Behance</button>
+    <button id="btn-other">Create a product</button>
+  </nav>
+  <script>
+    window.__drift = { createClicked: false, otherClicked: false };
+    document.getElementById("btn-create").addEventListener("click", () => {
+      window.__drift.createClicked = true;
+    });
+    document.getElementById("btn-other").addEventListener("click", () => {
+      window.__drift.otherClicked = true;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="utf-8"><title>Test form</title></head>
+  <body>
+    <label for="title">Title</label>
+    <input id="title" name="title" />
+    <label for="desc">Description</label>
+    <textarea id="desc" name="desc"></textarea>
+    <label for="cat">Category</label>
+    <select id="cat" name="cat">
+      <option value="">-- select --</option>
+      <option value="Travel">Travel</option>
+      <option value="Food">Food</option>
+      <option value="Tech">Tech</option>
+    </select>
+    <label for="tags">Tags</label>
+    <input id="tags" name="tags" />
+    <input type="file" id="file" name="file" />
+    <label for="link">Link</label>
+    <textarea id="link" name="link"></textarea>
+    <button id="publish" onclick="capture(event)">Publish post</button>
+    <script>
+      window.__posted = new Map();
+      function capture(e) {
+        e.preventDefault();
+        const f = document.getElementById("file");
+        window.__posted.set("title", document.getElementById("title").value);
+        window.__posted.set("desc", document.getElementById("desc").value);
+        window.__posted.set("cat", document.getElementById("cat").value);
+        window.__posted.set("tags", document.getElementById("tags").value);
+        window.__posted.set("file", f.files.length ? f.files[0].name : "");
+        window.__posted.set("link", document.getElementById("link").value);
+        window.__posted.set("clicked", document.getElementById("publish").textContent);
+      }
+    </script>
+  </body>
+</html>

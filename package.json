@@ -1,0 +1,34 @@
+{
+  "name": "behance-backlink-automator",
+  "version": "1.0.0",
+  "description": "Automate backlink creation by submitting blogs/projects to directory sites (Behance first) using a discovered, validated & reusable Playwright workflow.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "discover": "node src/index.js --discover-only",
+    "typecheck": "node --check src/index.js && node --check src/orchestrator.js",
+    "test": "node scripts/smoke.unit.mjs && node scripts/smoke.docmode.mjs && node scripts/smoke.engine.mjs && node scripts/smoke.behance.mjs && node scripts/smoke.salvage.mjs && node scripts/smoke.sharepresentation.mjs",
+    "check": "bash scripts/check.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "backlink",
+    "automation",
+    "playwright",
+    "behance",
+    "blog",
+    "seo"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0",
+    "docx": "^9.7.1",
+    "playwright": "^1.47.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

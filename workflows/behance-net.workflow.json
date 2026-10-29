@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "siteName": "behance",
+    "siteUrl": "https://www.behance.net/",
+    "siteKey": "behance-net",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent",
+    "discoveredAt": "2026-09-15T04:23:07.737Z",
+    "discoveryUrls": [
+      "https://www.behance.net/",
+      "https://www.behance.net/portfolio/editor?tracking_source=upload"
+    ]
+  },
+  "auth": {
+    "required": false,
+    "loginSteps": []
+  },
+  "steps": [
+    {
+      "id": "goto-home",
+      "action": "goto",
+      "url": "https://www.behance.net/"
+    },
+    {
+      "id": "open-create-0",
+      "action": "click",
+      "selector": "",
+      "text": "Share Work",
+      "alts": [
+        "Share work",
+        "Create a project",
+        "Create Project",
+        "Upload Work",
+        "Upload a project"
+      ],
+      "waitAfter": 5000
+    },
+    {
+      "id": "open-image",
+      "action": "click",
+      "selector": "div[aria-label=\"Project Editor Controls\"] > :nth-child(1) > :nth-child(1) > :nth-child(2) > :nth-child(1) > :nth-child(1)",
+      "text": "Image",
+      "waitAfter": 3500
+    },
+    {
+      "id": "open-text",
+      "action": "click",
+      "selector": "div[aria-label=\"Project Editor Controls\"] > :nth-child(1) > :nth-child(1) > :nth-child(2) > :nth-child(2) > :nth-child(1)",
+      "text": "Text",
+      "waitAfter": 3000
+    },
+    {
+      "id": "fill-description",
+      "action": "fill",
+      "selector": "div[aria-label=\"false\"]",
+      "property": "description",
+      "waitAfter": 500
+    },
+    {
+      "id": "append-backlink",
+      "action": "type",
+      "property": "backlinkUrl",
+      "waitAfter": 600
+    },
+    {
+      "id": "open-publish",
+      "action": "click",
+      "selector": "",
+      "text": "Publish",
+      "topRight": true,
+      "waitAfter": 3500
+    },
+    {
+      "id": "fill-title",
+      "action": "fill",
+      "selector": "input[aria-label=\"Give your project a title\"]",
+      "property": "title",
+      "waitAfter": 400
+    },
+    {
+      "id": "fill-modal-description",
+      "action": "fill",
+      "selector": "textarea[aria-label=\"Description\"]",
+      "property": "shortDescription",
+      "waitAfter": 400
+    },
+    {
+      "id": "fill-tags",
+      "action": "tags",
+      "selector": "input[placeholder=\"Add up to 10 keywords to help people discover your project\"]",
+      "property": "tags",
+      "waitAfter": 400
+    },
+    {
+      "id": "submit-post",
+      "action": "click",
+      "selector": "",
+      "text": "Publish",
+      "inDialog": true,
+      "waitAfter": 9000
+    }
+  ],
+  "fieldMappings": {
+    "title": "fill-title",
+    "description": "fill-description",
+    "tags": "fill-tags",
+    "category": "auto-select-category",
+    "backlinkUrl": "append-backlink"
+  },
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "[data-testid='confirmation']",
+      "[class*='success']",
+      "[aria-label*='close']"
+    ],
+    "urlPatterns": [
+      "https://www.behance.net/gallery/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": true,
+    "supportsTags": true,
+    "supportsCategory": true,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "ready",
+  "missing": [],
+  "notes": "",
+  "validation": {
+    "ranAt": "2026-09-23T00:00:00.000Z",
+    "ok": "attention",
+    "checked": 7,
+    "problems": []
+  },
+  "site": "https://www.behance.net/",
+  "savedAt": "2026-09-23T00:00:00.000Z"
+}

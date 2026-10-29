@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<body>
+  <nav aria-label="Site Wide">
+    <!-- The trap: a mobile-drawer duplicate marked visibility:hidden but still
+         sized (offsetWidth/offsetHeight report > 0). Clicking THIS one was the
+         live bug — Playwright considers it hidden and the step timed out. -->
+    <li data-testid="mobile" class="PrimaryNav-coreNavigationItem-N4p"
+        style="visibility: hidden; width: 200px; height: 40px; display: block;">
+      Share Work
+    </li>
+    <!-- The real desktop control: visible and sized. -->
+    <button id="btn-share" class="PrimaryNav-coreNavigationItem-N4p">Share Work</button>
+  </nav>
+  <script>
+    window.__share = { desktop: 0, mobile: 0 };
+    document.getElementById("btn-share").addEventListener("click", () => { window.__share.desktop++; });
+    document.querySelector("[data-testid=\"mobile\"]").addEventListener("click", () => { window.__share.mobile++; });
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Behance-like editor</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    [hidden] { display: none !important; }
+    .block { border: 1px dashed #ccc; padding: 12px; margin: 8px 0; }
+    #dialog { border: 2px solid #555; padding: 16px; margin-top: 12px; }
+    input, textarea { display: block; width: 90%; margin: 6px 0; padding: 6px; }
+    [data-testid="confirmation"] { color: #0a7c2f; border: 1px solid #0a7c2f; padding: 10px; }
+    #category-combo { border: 1px solid #999; padding: 6px; margin: 6px 0; cursor: pointer; max-width: 400px; }
+    #category-options li { border: 1px solid #ccc; padding: 4px 8px; cursor: pointer; max-width: 400px; }
+    #category-options { list-style: none; padding: 0; margin: 0 0 8px; }
+    #tags-cover { position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: transparent; }
+  </style>
+</head>
+<body>
+  <header>
+    <button id="btn-image" type="button">Image</button>
+    <button id="btn-text" type="button">Text</button>
+  </header>
+  <nav aria-label="Site Wide">
+    <button id="btn-share-work" type="button">
+      <span class="PrimaryNav-coreNavigationLabel-eg9">Share Work</span>
+    </button>
+  </nav>
+  <nav aria-label="Project Editor">
+    <button id="btn-preview" type="button" hidden>Preview</button>
+    <button id="btn-publish" type="button">Publish</button>
+  </nav>
+
+  <!-- Behance creates these lazily -->
+  <div class="block" id="image-panel" hidden>
+    <button id="btn-upload-device" type="button">Upload from device</button>
+    <input type="file" id="file-input" />
+  </div>
+  <div class="block" id="text-panel" hidden>
+    <div id="body-editor" contenteditable="true" aria-label="Write about your work"></div>
+  </div>
+
+  <section id="dialog" role="dialog" hidden>
+    <input aria-label="Give your project a title" id="in-title" placeholder="Add a title to get discovered" />
+    <textarea id="project-description" aria-label="Description" placeholder="Write a description"></textarea>
+    <label>Category</label>
+    <div id="cat-select-wrap">
+      <label for="in-category">Category</label>
+      <select id="in-category" aria-label="Category">
+        <option value="">Select a category</option>
+        <option value="Branding">Branding</option>
+        <option value="Artificial Intelligence">Artificial Intelligence</option>
+        <option value="Web Design">Web Design</option>
+      </select>
+    </div>
+    <div id="category-combo" role="combobox" aria-label="Category" tabindex="0">Select a category</div>
+    <ul id="category-options" role="listbox" hidden>
+      <li role="option" data-value="Branding">Branding</li>
+      <li role="option" data-value="Artificial Intelligence">Artificial Intelligence</li>
+      <li role="option" data-value="Web Design">Web Design</li>
+    </ul>
+    <input id="in-tags" placeholder="Add up to 10 keywords to help people discover your project" />
+    <div id="tags-cover" hidden>overlay</div>
+    <div id="tag-suggestions" role="listbox" hidden>
+      <button role="option" data-tag="AI Automation">AI Automation</button>
+      <button role="option" data-tag="Artificial Intelligence">Artificial Intelligence</button>
+      <button role="option" data-tag="Automation Solutions">Automation Solutions</button>
+      <button role="option" data-tag="Ai Agent">Ai Agent</button>
+      <button role="option" data-tag="Branding">Branding</button>
+    </div>
+    <div>
+      <label><input type="radio" name="visibility" value="public" /> Public</label>
+      <label><input type="radio" name="visibility" value="private" /> Visible to only you</label>
+    </div>
+    <div aria-label="Settings Action Buttons">
+      <button id="btn-confirm-publish" type="button">Publish</button>
+    </div>
+  </section>
+
+  <div id="confirmation" data-testid="confirmation" hidden>
+    Your project has been published!
+    <a id="gallery-link" href="https://www.behance.net/gallery/200000001/">View your project</a>
+  </div>
+
+  <script>
+    window.__captured = {};
+    window.addEventListener("load", () => {
+      document.getElementById("btn-image").addEventListener("click", () => {
+        const panel = document.getElementById("image-panel");
+        panel.hidden = false;
+        window.__captured.imageClicked = true;
+      });
+      document.getElementById("btn-text").addEventListener("click", () => {
+        document.getElementById("text-panel").hidden = false;
+        document.getElementById("body-editor").focus();
+        window.__captured.textClicked = true;
+      });
+      // Behance steals focus shortly after the body is pasted — blur the
+      // editor so the test proves the backlink still lands inside the body.
+      document.getElementById("body-editor").addEventListener("input", () => {
+        setTimeout(() => {
+          const ed = document.getElementById("body-editor");
+          if (document.activeElement === ed) ed.blur();
+        }, 250);
+      });
+      document.getElementById("btn-share-work").addEventListener("click", () => {
+        window.__captured.shareWorkClicked = (window.__captured.shareWorkClicked || 0) + 1;
+      });
+      // Simulates Behance inserting "Preview" into the editor nav after a
+      // media upload, which shifts every nth-child index under that nav.
+      const previewInserted = document.getElementById("btn-image").addEventListener(
+        "click",
+        () => {
+          document.getElementById("btn-preview").hidden = false;
+          window.__captured.previewInserted = true;
+        },
+        { capture: true }
+      );
+      const publishBtn = document.getElementById("btn-publish");
+      publishBtn.addEventListener("click", () => {
+        document.getElementById("dialog").hidden = false;
+        window.__captured.dialogOpened = true;
+      });
+      document.getElementById("btn-confirm-publish").addEventListener("click", () => {
+        window.__captured.title = document.getElementById("in-title").value;
+        window.__captured.shortDesc = document.getElementById("project-description").value;
+        window.__captured.category = document.getElementById("in-category").value;
+        const picked = window.__captured.pickedTags || [];
+        window.__captured.tags = picked.length ? picked : document.getElementById("in-tags").value.split(",").filter(Boolean);
+        window.__captured.visibility = document.querySelector('input[name="visibility"]:checked')?.value;
+        window.__captured.body = document.getElementById("body-editor").innerText;
+        window.__captured.bodyHtml = document.getElementById("body-editor").innerHTML;
+        document.getElementById("dialog").hidden = true;
+        window.__captured.dialogClosedAfterFill = true;
+        document.getElementById("confirmation").hidden = false;
+        window.__captured.published = true;
+      });
+      // Behance-style tag autocomplete: typing a word reveals suggestions below
+      // the box; clicking one commits it as a chip.
+      const tagInput = document.getElementById("in-tags");
+      const suggestions = document.getElementById("tag-suggestions");
+      tagInput.addEventListener("input", () => {
+        suggestions.hidden = !tagInput.value.trim();
+      });
+      suggestions.querySelectorAll("button[role=option]").forEach((b) => {
+        b.addEventListener("click", () => {
+          window.__captured.suggestedTagClicked = b.dataset.tag;
+          window.__captured.pickedTags = (window.__captured.pickedTags || []).concat(b.dataset.tag);
+          tagInput.value = "";
+          suggestions.hidden = true;
+          tagInput.focus();
+        });
+      });
+      document.getElementById("in-category").addEventListener("change", () => {
+        window.__captured.categoryChanged = document.getElementById("in-category").value;
+      });
+      // Behance-style combobox category: keep the hidden <select> in sync so
+      // only one real value flows out, and let fixtures force this UI mode.
+      const combo = document.getElementById("category-combo");
+      const comboOpts = document.getElementById("category-options");
+      if (new URLSearchParams(location.search).get("categoryUI") === "combobox") {
+        document.getElementById("cat-select-wrap").hidden = true;
+      }
+      // Simulate a live site overlay covering the tags input (Playwright's
+      // normal click then can't reach it and must fall back to a DOM click).
+      if (new URLSearchParams(location.search).get("tagsCovered") === "1") {
+        document.getElementById("tags-cover").hidden = false;
+      }
+      // Simulate a DRIFTED tags field: the recorded placeholder no longer
+      // exists — the engine must re-probe the tag input by label, not the old
+      // placeholder.
+      const tagsPh = new URLSearchParams(location.search).get("tagsPlaceholder");
+      if (tagsPh) {
+        const t = document.getElementById("in-tags");
+        t.placeholder = tagsPh;
+        t.setAttribute("aria-label", tagsPh);
+      }
+      combo.addEventListener("click", () => {
+        comboOpts.hidden = !comboOpts.hidden;
+      });
+      comboOpts.querySelectorAll("li[role=option]").forEach((o) => {
+        o.addEventListener("click", () => {
+          const sel = document.getElementById("in-category");
+          const opts = [...sel.options];
+          const next = opts.find((op) => op.value === o.dataset.value);
+          if (next) {
+            sel.value = next.value;
+            sel.dispatchEvent(new Event("change", { bubbles: true }));
+          }
+          combo.textContent = o.textContent.trim();
+          comboOpts.hidden = true;
+        });
+      });
+      const fileInput = document.getElementById("file-input");
+      document.getElementById("btn-upload-device").addEventListener("click", () => {
+        fileInput.hidden = true;
+        window.__captured.fileRequested = true;
+      });
+      fileInput.addEventListener("change", () => {
+        window.__captured.fileName = fileInput.files[0]?.name;
+      });
+      // Review-then-publish mode: auto-click the final Publish once the dialog
+      // is open AND all fields are filled (mimics the human reviewing then
+      // clicking the final publish button). Enabled via ?autoConfirm=<ms>.
+      const autoConfirmMs = new URLSearchParams(location.search).get("autoConfirm");
+      if (autoConfirmMs !== null) {
+        const delay = Number(autoConfirmMs) || 600;
+        let confirmed = false;
+        const timer = setInterval(() => {
+          const dialog = document.getElementById("dialog");
+          const tagsReady = () => window.__automatorTagsDone === true;
+          const filled = () =>
+            document.getElementById("in-title").value.trim() &&
+            document.getElementById("project-description").value.trim() &&
+            tagsReady();
+          if (!confirmed && dialog && !dialog.hidden && filled() && !window.__captured.dialogClosedAfterFill) {
+            confirmed = true;
+            window.__captured.reviewDialogObserved = true;
+            setTimeout(() => document.getElementById("btn-confirm-publish").click(), delay);
+            clearInterval(timer);
+          }
+        }, 120);
+      }
+    });
+  </script>
+</body>
+</html>

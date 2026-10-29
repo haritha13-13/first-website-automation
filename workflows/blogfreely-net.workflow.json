@@ -1,0 +1,136 @@
+{
+  "meta": {
+    "siteName": "blogfreely",
+    "siteUrl": "https://blogfreely.net/",
+    "siteKey": "blogfreely-net",
+    "tool": "behance-backlink-automator",
+    "toolVersion": "1.0.0",
+    "generatedBy": "browser-agent",
+    "discoveredAt": "2026-09-21T10:05:00.000Z",
+    "discoveryUrls": [
+      "https://blogfreely.net/",
+      "https://blogfreely.net/login",
+      "https://blogfreely.net/signup",
+      "https://blogfreely.net/new"
+    ]
+  },
+  "auth": {
+    "required": false,
+    "loginSteps": [],
+    "signupSteps": []
+  },
+  "inputs": {
+    "content": {
+      "mode": "text"
+    },
+    "fields": [
+      "title",
+      "description",
+      "keyword",
+      "backlinkUrl"
+    ]
+  },
+  "steps": [
+    {
+      "id": "goto-login",
+      "action": "goto",
+      "url": "https://blogfreely.net/login",
+      "stepType": "login"
+    },
+    {
+      "id": "fill-username",
+      "action": "fill",
+      "selector": "input[name='alias']",
+      "property": "username",
+      "waitAfter": 300,
+      "stepType": "login"
+    },
+    {
+      "id": "fill-password",
+      "action": "fill",
+      "selector": "input[name='pass']",
+      "property": "password",
+      "waitAfter": 300,
+      "stepType": "login"
+    },
+    {
+      "id": "submit-login",
+      "action": "click",
+      "selector": "input#btn-login",
+      "waitAfter": 4000,
+      "stepType": "login"
+    },
+    {
+      "id": "goto-compose",
+      "action": "goto",
+      "url": "https://blogfreely.net/new"
+    },
+    {
+      "id": "fill-content",
+      "action": "fill",
+      "selector": "textarea#writer",
+      "property": "description",
+      "autoLink": true,
+      "waitAfter": 400,
+      "prependSeoTitle": true
+    },
+    {
+      "id": "open-publish-target",
+      "action": "click",
+      "selector": "a#publish-to",
+      "waitAfter": 600
+    },
+    {
+      "id": "select-blog-target",
+      "action": "click",
+      "selector": "li.target:not(#anonymous) a",
+      "text": "speedbots",
+      "waitAfter": 300
+    },
+    {
+      "id": "submit-publish",
+      "action": "click",
+      "selector": "a#publish",
+      "text": "Publish",
+      "waitAfter": 1000
+    },
+    {
+      "id": "wait-published-url",
+      "action": "wait",
+      "untilURLRegExp": "^https?://blogfreely\\.net/[A-Za-z0-9_.-]+/[A-Za-z0-9][^/#?]*$",
+      "timeoutMs": 20000,
+      "waitAfter": 500
+    }
+  ],
+  "fieldMappings": {
+    "username": "fill-username"
+  },
+  "publish": {
+    "submitStepIds": []
+  },
+  "verification": {
+    "successSelectors": [
+      "article",
+      "[class*='success']",
+      "[class*='alert']",
+      "[class*='post']"
+    ],
+    "urlPatterns": [
+      "https://blogfreely.net/*"
+    ],
+    "timeoutMs": 60000
+  },
+  "cap": {
+    "supportsDescription": false,
+    "supportsTags": false,
+    "supportsCategory": false,
+    "supportsVisibility": false,
+    "requiresImage": false
+  },
+  "status": "active",
+  "blocker": null,
+  "missing": [],
+  "notes": "blogfreely DIRECT publish flow: 1) log in (/login: fill Username input[name='alias'], Password input[name='pass'], click Login input#btn-login). 2) Compose: /new \u2014 paste content into textarea#writer, open the Publish-to menu (click a#publish-to), select the real blog target (li.target:not(#anonymous) a), then click a#publish BEFORE the textarea input + target are set the publish button is staged 'disabled'. Published URL https://blogfreely.net/<blog>/<slug> captured as the result. Menu items: Draft=li.target#anonymous; the user's public blog is listed second. (The target menu and layout changed previously 'li.target#blog-speedbotsdm'; site is blogfreely.net, not .it.)",
+  "site": "https://blogfreely.net/",
+  "savedAt": "2026-09-21T10:05:00.000Z"
+}
